@@ -1,11 +1,11 @@
 const express = require('express');
 const router = express.Router()
 const { body, validationResult } = require('express-validator')
-const DESIGNATION = require('../models/designation')
+const NOTICE = require('../models/notice')
 
 
 
-// ADD DESIGNATION
+// ADD NOTICE
 
 
 router.post('/add', [
@@ -17,14 +17,7 @@ router.post('/add', [
     }
     try {
         let {title} = req.body
-        const oldData = await DESIGNATION.findOne({title})
-        if(oldData != null){
-            return res.status(400).json({
-                status: "error",
-                message: "Designation already exists"
-            })
-        }
-        const data = await DESIGNATION.create({title})
+        const data = await NOTICE.create({title})
         return res.json({
             status: "success",
             data
@@ -39,24 +32,24 @@ router.post('/add', [
 
 
 
-// UPDATE DESIGNATION
+// UPDATE NOTICE
 
 
 router.put('/:id', async(req,res)=>{
     try {
         let {id} = req.params
         let {title} = req.body
-        const oldData = await DESIGNATION.findById(id)
+        const oldData = await NOTICE.findById(id)
         if(oldData == null){
             return res.status(400).json({
                 status: "error",
-                message: "This designation does not exists"
+                message: "Notice does not exists"
             })
         }
-        const data = await DESIGNATION.findByIdAndUpdate(id,{title})
+        const data = await NOTICE.findByIdAndUpdate(id,{title})
         return res.json({
             status: "success",
-            data: await DESIGNATION.findById(id)
+            data: await NOTICE.findById(id)
         })
     } catch (error) {
         return res.status(400).json({
@@ -67,20 +60,20 @@ router.put('/:id', async(req,res)=>{
 
 
 
-// DELETE DESIGNATION
+// DELETE NOTICE
 
 
 router.delete('/:id', async(req,res)=>{
     try {
         let {id} = req.params
-        const oldData = await DESIGNATION.findById(id)
+        const oldData = await NOTICE.findById(id)
         if(oldData == null){
             return res.status(400).json({
                 status: "error",
-                message: "department does not exists"
+                message: "notice does not exists"
             })
         }
-        await DESIGNATION.findByIdAndDelete(id)
+        await NOTICE.findByIdAndDelete(id)
         return res.status(400).json({
             status: "success",
             message: "record deleted"
@@ -94,13 +87,13 @@ router.delete('/:id', async(req,res)=>{
 
 
 
-// GET ONE DESIGNATION
+// GET ONE NOTICE
 
 
 router.get('/:id', async(req,res)=>{
     try {
         let {id} = req.params
-        const data = await DESIGNATION.findById(id)
+        const data = await NOTICE.findById(id)
         return res.json({
             status: "success",
             data
@@ -114,12 +107,12 @@ router.get('/:id', async(req,res)=>{
 
 
 
-// GET ALL DESIGNATION
+// GET ALL NOTICES
 
 
 router.get('/', async(req,res)=>{
     try {
-        const data = await DESIGNATION.find()
+        const data = await NOTICE.find()
         return res.json({
             status: "success",
             data

@@ -15,6 +15,7 @@ const leaderBoardRouter = require('./routes/leaderBoard')
 const reportRouter = require('./routes/report')
 const departmentRouter = require('./routes/department')
 const designationRouter = require('./routes/designation')
+const noticeRouter = require('./routes/notice')
 
 
 
@@ -36,6 +37,7 @@ app.use('/leaderBoard', leaderBoardRouter)
 app.use('/report', reportRouter)
 app.use('/department', departmentRouter)
 app.use('/designation', designationRouter)
+app.use('/notice', noticeRouter)
 
 
 
