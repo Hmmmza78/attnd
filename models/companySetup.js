@@ -1,37 +1,37 @@
 const mongoose = require('mongoose');
-const taskSchema = new mongoose.Schema({
+const companySetupSchema = new mongoose.Schema({
     name: {
         type: String,
         required: true
     },
-    description: {
+    address: {
         type: String,
         required: true
     },
-    startDate: {
+    phone: {
         type: String,
         required: true
     },
-    endDate: {
+    startTime: {
         type: String,
         required: true
     },
-    assignedTo: {
+    endTime: {
         type: String,
         required: true
     },
-    points: {
-        type: Array,
-        required: false
+    timeZone: {
+        type: String,
+        required: true
     },
-    attachments: {
-        type: Array,
-        required: false
+    status: {
+        type: String,
+        required: false,
     }
 }, {
     timestamps: true,
-    collection: "tasks"
+    collection: "companySetup"
 })
 
 
-module.exports = mongoose.model("taskSchema", taskSchema)
+module.exports = mongoose.model("companySetupSchema", companySetupSchema)
