@@ -13,6 +13,9 @@ const taskRouter = require('./routes/task')
 const pointRouter = require('./routes/point')
 const leaderBoardRouter = require('./routes/leaderBoard')
 const reportRouter = require('./routes/report')
+const departmentRouter = require('./routes/department')
+
+
 
 
 // MIDDLEWARES
@@ -29,6 +32,7 @@ app.use('/task', taskRouter)
 app.use('/point', pointRouter)
 app.use('/leaderBoard', leaderBoardRouter)
 app.use('/report', reportRouter)
+app.use('/department', departmentRouter)
 
 
 
