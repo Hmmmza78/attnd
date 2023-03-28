@@ -4,11 +4,7 @@ const { body, validationResult } = require('express-validator')
 const ATTENDANCE = require('../models/attendance')
 
 
-
-
 // CHECK IN API
-
-
 router.post('/checkIn', [
     body('userId').notEmpty(),
     body('checkInLat').notEmpty(),
@@ -49,8 +45,6 @@ router.post('/checkIn', [
         return res.status(400).json(error)
     }
 })
-
-
 
 // CHECK OUT API
 router.post('/checkOut', [
@@ -101,8 +95,6 @@ router.post('/checkOut', [
     }
 })
 
-
-
 router.get('/leaderBoard', async (req, res) => {
     try {
         // Query the attendance records collection to get the leaderBoard data
@@ -133,7 +125,6 @@ router.get('/leaderBoard', async (req, res) => {
         res.status(500).json({ message: 'Error fetching leaderBoard data' });
     }
 });
-
 
 // GET ALL API
 router.get('/', async (req, res) => {
