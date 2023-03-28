@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router()
 const { body, validationResult } = require('express-validator')
-const DEPARTMENT = require('../models/department')
+const DESIGNATION = require('../models/designation')
 
 
 
@@ -17,14 +17,14 @@ router.post('/add', [
     }
     try {
         let {title} = req.body
-        const oldData = await DEPARTMENT.findOne({title})
+        const oldData = await DESIGNATION.findOne({title})
         if(oldData != null){
             return res.status(400).json({
                 status: "error",
-                message: "Department already exists"
+                message: "Designation already exists"
             })
         }
-        const data = await DEPARTMENT.create({title})
+        const data = await DESIGNATION.create({title})
         return res.json({
             status: "success",
             data
@@ -46,17 +46,17 @@ router.put('/:id', async(req,res)=>{
     try {
         let {id} = req.params
         let {title} = req.body
-        const oldData = await DEPARTMENT.findById(id)
+        const oldData = await DESIGNATION.findById(id)
         if(oldData == null){
             return res.status(400).json({
                 status: "error",
-                message: "This department does not exists"
+                message: "This designation does not exists"
             })
         }
-        const data = await DEPARTMENT.findByIdAndUpdate(id,{title})
+        const data = await DESIGNATION.findByIdAndUpdate(id,{title})
         return res.json({
             status: "success",
-            data: await DEPARTMENT.findById(id)
+            data: await DESIGNATION.findById(id)
         })
     } catch (error) {
         return res.status(400).json({
@@ -73,14 +73,14 @@ router.put('/:id', async(req,res)=>{
 router.delete('/:id', async(req,res)=>{
     try {
         let {id} = req.params
-        const oldData = await DEPARTMENT.findById(id)
+        const oldData = await DESIGNATION.findById(id)
         if(oldData == null){
             return res.status(400).json({
                 status: "error",
                 message: "department does not exists"
             })
         }
-        await DEPARTMENT.findByIdAndDelete(id)
+        await DESIGNATION.findByIdAndDelete(id)
         return res.status(400).json({
             status: "success",
             message: "record deleted"
@@ -100,7 +100,7 @@ router.delete('/:id', async(req,res)=>{
 router.get('/:id', async(req,res)=>{
     try {
         let {id} = req.params
-        const data = await DEPARTMENT.findById(id)
+        const data = await DESIGNATION.findById(id)
         return res.json({
             status: "success",
             data
@@ -119,7 +119,7 @@ router.get('/:id', async(req,res)=>{
 
 router.get('/', async(req,res)=>{
     try {
-        const data = await DEPARTMENT.find()
+        const data = await DESIGNATION.find()
         return res.json({
             status: "success",
             data

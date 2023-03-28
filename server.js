@@ -14,6 +14,8 @@ const pointRouter = require('./routes/point')
 const leaderBoardRouter = require('./routes/leaderBoard')
 const reportRouter = require('./routes/report')
 const departmentRouter = require('./routes/department')
+const designationRouter = require('./routes/designation')
+
 
 
 
@@ -33,6 +35,7 @@ app.use('/point', pointRouter)
 app.use('/leaderBoard', leaderBoardRouter)
 app.use('/report', reportRouter)
 app.use('/department', departmentRouter)
+app.use('/designation', designationRouter)
 
 
 
@@ -54,5 +57,5 @@ connect()
 
 // SERVER STARTED
 const PORT = process.env.PORT
-app.listen(3001, () => { console.log('server started') })
+app.listen(PORT, () => { console.log('server started') })
 
