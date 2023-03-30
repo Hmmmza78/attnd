@@ -126,16 +126,6 @@ router.get('/leaderBoard', async (req, res) => {
     }
 });
 
-// GET ALL API
-router.get('/', async (req, res) => {
-    try {
-
-        const data = await ATTENDANCE.find()
-        return res.json(data)
-    } catch (error) {
-        return res.status(400).json(error)
-    }
-})
 
 // GET API
 router.get('/:id', async (req, res) => {
@@ -152,6 +142,27 @@ router.get('/:id', async (req, res) => {
         return res.status(400).json(error)
     }
 })
+
+
+
+
+// GET ALL API
+router.get('/', async (req, res) => {
+    try {
+
+        const data = await ATTENDANCE.find()
+        return res.json({
+            status: "success",
+            data
+        })
+    } catch (error) {
+        return res.status(400).json(error)
+    }
+})
+
+
+
+
 
 
 module.exports = router
