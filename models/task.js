@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const taskSchema = new mongoose.Schema({
-    name: {
+    title: {
         type: String,
         required: true
     },
@@ -8,11 +8,7 @@ const taskSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    startDate: {
-        type: String,
-        required: true
-    },
-    endDate: {
+    dueDate: {
         type: String,
         required: true
     },
@@ -24,8 +20,12 @@ const taskSchema = new mongoose.Schema({
         type: Array,
         required: false
     },
-    attachments: {
+    priority: {
         type: Array,
+        required: false
+    },
+    status: {
+        type: String,
         required: false
     }
 }, {

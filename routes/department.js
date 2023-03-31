@@ -10,21 +10,21 @@ const DEPARTMENT = require('../models/department')
 
 router.post('/add', [
     body('title').notEmpty()
-], async(req,res)=>{
+], async (req, res) => {
     const error = validationResult(req)
-    if(!error.isEmpty()){
+    if (!error.isEmpty()) {
         return res.status(400).json(error)
     }
     try {
-        let {title} = req.body
-        const oldData = await DEPARTMENT.findOne({title})
-        if(oldData != null){
+        let { title } = req.body
+        const oldData = await DEPARTMENT.findOne({ title })
+        if (oldData != null) {
             return res.status(400).json({
                 status: "error",
                 message: "Department already exists"
             })
         }
-        const data = await DEPARTMENT.create({title})
+        const data = await DEPARTMENT.create({ title })
         return res.json({
             status: "success",
             data
@@ -42,18 +42,18 @@ router.post('/add', [
 // UPDATE DEPARTMENT
 
 
-router.put('/:id', async(req,res)=>{
+router.post('/edit', async (req, res) => {
     try {
-        let {id} = req.params
-        let {title} = req.body
+        let { id } = req.body
+        let { title } = req.body
         const oldData = await DEPARTMENT.findById(id)
-        if(oldData == null){
+        if (oldData == null) {
             return res.status(400).json({
                 status: "error",
                 message: "This department does not exists"
             })
         }
-        const data = await DEPARTMENT.findByIdAndUpdate(id,{title})
+        const data = await DEPARTMENT.findByIdAndUpdate(id, { title })
         return res.json({
             status: "success",
             data: await DEPARTMENT.findById(id)
@@ -70,11 +70,11 @@ router.put('/:id', async(req,res)=>{
 // DELETE DEPARTMENT
 
 
-router.delete('/:id', async(req,res)=>{
+router.post('/delete', async (req, res) => {
     try {
-        let {id} = req.params
+        let { id } = req.body;
         const oldData = await DEPARTMENT.findById(id)
-        if(oldData == null){
+        if (oldData == null) {
             return res.status(400).json({
                 status: "error",
                 message: "department does not exists"
@@ -97,9 +97,9 @@ router.delete('/:id', async(req,res)=>{
 // GET ONE DEPARTMENT
 
 
-router.get('/:id', async(req,res)=>{
+router.get('/getOne', async (req, res) => {
     try {
-        let {id} = req.params
+        let { id } = req.body;
         const data = await DEPARTMENT.findById(id)
         return res.json({
             status: "success",
@@ -117,7 +117,7 @@ router.get('/:id', async(req,res)=>{
 // GET ALL DEPARTMENTS
 
 
-router.get('/', async(req,res)=>{
+router.get('/', async (req, res) => {
     try {
         const data = await DEPARTMENT.find()
         return res.json({

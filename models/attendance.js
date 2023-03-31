@@ -30,7 +30,8 @@ const attendanceSchema = new mongoose.Schema({
     },
     day: {
         type: String,
-        required: true
+        required: true,
+        default: new Date().toISOString().slice(0, 10)
     },
     status: {
         type: String,

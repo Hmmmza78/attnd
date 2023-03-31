@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router()
 const { body, validationResult } = require('express-validator')
 const ATTENDANCE = require('../models/attendance')
+const USER = require('../models/user')
 
 
 // CHECK IN API
@@ -18,8 +19,7 @@ router.post('/checkIn', [
     }
     try {
         let { userId, checkInLat, checkInLon } = req.body
-        const day = new Date().getDay()
-        console.log(day);
+        const day = new Date().toISOString().slice(0, 10)
 
         const checkInTime = Date.now()
 
@@ -27,7 +27,7 @@ router.post('/checkIn', [
         const oldData = await ATTENDANCE.findOne({ userId, day })
 
         if (oldData != null) {
-            res.status(400).json({
+            return res.status(400).json({
                 status: "error",
                 message: "You've already checked in today"
             })
@@ -126,6 +126,49 @@ router.get('/leaderBoard', async (req, res) => {
     }
 });
 
+// today's attendance
+router.get("/attendanceToday", async (req, res) => {
+    try {
+        const today = new Date();
+        const startOfToday = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+        const endOfToday = new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1);
+        const attendanceRecord = await ATTENDANCE.find({
+            date: {
+                $gte: startOfToday,
+                $lt: endOfToday
+            }
+        });
+        if (!attendanceRecord) {
+            return res.status(404).json({ error: "No attendance record found for today." });
+        }
+        const finalResult = []
+        for (const record of attendRecord) {
+            const userData = await USER.findById(record.userId);
+            finalResult.push({ ...record._doc, userData });
+        }
+        return res.json({ status: "success", data: finalResult });
+    } catch (error) {
+        return res.status(404).json({
+            status: "error",
+            message: "No data available"
+        })
+    }
+})
+
+
+// GET ALL API
+router.get('/', async (req, res) => {
+    try {
+
+        const data = await ATTENDANCE.find()
+        return res.json({
+            status: "success",
+            data
+        })
+    } catch (error) {
+        return res.status(400).json(error)
+    }
+});
 
 // GET API
 router.get('/:id', async (req, res) => {
@@ -142,27 +185,6 @@ router.get('/:id', async (req, res) => {
         return res.status(400).json(error)
     }
 })
-
-
-
-
-// GET ALL API
-router.get('/', async (req, res) => {
-    try {
-
-        const data = await ATTENDANCE.find()
-        return res.json({
-            status: "success",
-            data
-        })
-    } catch (error) {
-        return res.status(400).json(error)
-    }
-})
-
-
-
-
 
 
 module.exports = router

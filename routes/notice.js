@@ -10,14 +10,14 @@ const NOTICE = require('../models/notice')
 
 router.post('/add', [
     body('title').notEmpty()
-], async(req,res)=>{
+], async (req, res) => {
     const error = validationResult(req)
-    if(!error.isEmpty()){
+    if (!error.isEmpty()) {
         return res.status(400).json(error)
     }
     try {
-        let {title} = req.body
-        const data = await NOTICE.create({title})
+        let { title } = req.body
+        const data = await NOTICE.create({ title })
         return res.json({
             status: "success",
             data
@@ -35,18 +35,18 @@ router.post('/add', [
 // UPDATE NOTICE
 
 
-router.put('/:id', async(req,res)=>{
+router.post('/edit', async (req, res) => {
     try {
-        let {id} = req.params
-        let {title} = req.body
+        let { id } = req.body;
+        let { title } = req.body
         const oldData = await NOTICE.findById(id)
-        if(oldData == null){
+        if (oldData == null) {
             return res.status(400).json({
                 status: "error",
                 message: "Notice does not exists"
             })
         }
-        const data = await NOTICE.findByIdAndUpdate(id,{title})
+        const data = await NOTICE.findByIdAndUpdate(id, { title })
         return res.json({
             status: "success",
             data: await NOTICE.findById(id)
@@ -63,11 +63,11 @@ router.put('/:id', async(req,res)=>{
 // DELETE NOTICE
 
 
-router.delete('/:id', async(req,res)=>{
+router.post('/delete', async (req, res) => {
     try {
-        let {id} = req.params
+        let { id } = req.body;
         const oldData = await NOTICE.findById(id)
-        if(oldData == null){
+        if (oldData == null) {
             return res.status(400).json({
                 status: "error",
                 message: "notice does not exists"
@@ -90,9 +90,9 @@ router.delete('/:id', async(req,res)=>{
 // GET ONE NOTICE
 
 
-router.get('/:id', async(req,res)=>{
+router.get('/getOne', async (req, res) => {
     try {
-        let {id} = req.params
+        let { id } = req.body;
         const data = await NOTICE.findById(id)
         return res.json({
             status: "success",
@@ -110,7 +110,7 @@ router.get('/:id', async(req,res)=>{
 // GET ALL NOTICES
 
 
-router.get('/', async(req,res)=>{
+router.get('/', async (req, res) => {
     try {
         const data = await NOTICE.find()
         return res.json({

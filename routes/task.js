@@ -2,29 +2,29 @@ const express = require('express');
 const router = express.Router()
 const { body, validationResult } = require('express-validator')
 const TASK = require('../models/task')
-const {authenticateToken} = require("../middlewares/auth")
+const { authenticateToken } = require("../middlewares/auth")
 
 
 // ADD TASK
 
 
-router.post('/add',authenticateToken, [
-    body('name').notEmpty(),
+router.post('/add', authenticateToken, [
+    body('title').notEmpty(),
     body('description').notEmpty(),
-    body('startDate').notEmpty(),
-    body('endDate').notEmpty(),
-    body('assignedTo').notEmpty()
-], async(req,res)=>{
+    body('dueDate').notEmpty(),
+    body('assignedTo').notEmpty(),
+    body('priority').notEmpty(),
+], async (req, res) => {
     const error = validationResult(req)
-    if(!error.isEmpty()){
+    if (!error.isEmpty()) {
         return res.status(400).json({
             error: error.array()
         })
     }
 
     try {
-        let { name, description, startDate, endDate, assignedTo } = req.body
-        const data = await TASK.create({ name, description, startDate, endDate, assignedTo })
+        let { title, description, dueDate, assignedTo, priority } = req.body
+        const data = await TASK.create({ title, description, dueDate, assignedTo, priority });
 
         return res.json({
             status: "success",
@@ -42,11 +42,11 @@ router.post('/add',authenticateToken, [
 // UPDATE TASK
 
 
-router.put('/:id',authenticateToken, async(req,res)=>{
+router.post('/edit', authenticateToken, async (req, res) => {
     try {
-        let {id} = req.params
+        let { id } = req.body;
         const oldData = await TASK.findById(id)
-        if(oldData == null){
+        if (oldData == null) {
             return res.status(400).json({
                 status: "error",
                 message: "record not found"
@@ -68,11 +68,11 @@ router.put('/:id',authenticateToken, async(req,res)=>{
 
 // DELETE TASK
 
-router.delete('/:id',authenticateToken, async(req,res)=>{
+router.post('/delete', authenticateToken, async (req, res) => {
     try {
-        let {id} = req.params
+        let { id } = req.body;
         const oldData = await TASK.findById(id)
-        if(oldData == null){
+        if (oldData == null) {
             return res.status(400).json({
                 status: "error",
                 message: "record not found"
@@ -92,11 +92,11 @@ router.delete('/:id',authenticateToken, async(req,res)=>{
 
 // GET A TASK
 
-router.get('/:id', async(req,res)=>{
+router.get('/getOne', async (req, res) => {
     try {
-        let {id} = req.params
+        let { id } = req.body;
         const data = await TASK.findById(id)
-        if(data == null){
+        if (data == null) {
             return res.status(400).json({
                 status: "error",
                 message: "invalid id"
@@ -116,9 +116,9 @@ router.get('/:id', async(req,res)=>{
 // GET ALL TASKS
 
 
-router.get('/', async(req,res)=>{
+router.get('/', async (req, res) => {
     try {
-        let {id} = req.params
+        let { id } = req.params
         const data = await TASK.find()
         return res.json({
             status: "success",

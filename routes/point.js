@@ -10,9 +10,9 @@ router.post('/add', [
     body('title').notEmpty(),
     body('userId').notEmpty(),
     body('taskId').notEmpty(),
-], async(req,res)=>{
+], async (req, res) => {
     const error = validationResult(req)
-    if(!error.isEmpty()){
+    if (!error.isEmpty()) {
         return res.status(400).json({
             error: error.array()
         })
@@ -36,17 +36,17 @@ router.post('/add', [
 
 // UPDATE POINT
 
-router.put('/:id', async(req,res)=>{
+router.post('/edit', async (req, res) => {
     try {
-        let {id} = req.params
+        let { id } = req.body;
         const oldData = await POINT.findById(id)
-        if(oldData == null){
+        if (oldData == null) {
             return res.status(400).json({
                 status: "error",
                 message: "no record found"
             })
         }
-        await POINT.findByIdAndUpdate(id,{
+        await POINT.findByIdAndUpdate(id, {
             $set: req.body
         })
         return res.json({
@@ -62,11 +62,11 @@ router.put('/:id', async(req,res)=>{
 
 // DELETE POINT
 
-router.delete('/:id', async(req,res)=>{
+router.post('/delete', async (req, res) => {
     try {
-        let {id} = req.params
+        let { id } = req.body;
         const oldData = await POINT.findById(id)
-        if(oldData == null){
+        if (oldData == null) {
             return res.status(400).json({
                 status: "error",
                 message: "no record found"
@@ -84,13 +84,13 @@ router.delete('/:id', async(req,res)=>{
 
 
 
-// GET A POINT 
+// GET A POINT
 
-router.get('/:id', async(req,res)=>{
+router.get('/getOne', async (req, res) => {
     try {
-        let {id} = req.params
+        let { id } = req.body;
         const data = await POINT.findById(id)
-        if(data == null){
+        if (data == null) {
             return res.status(400).json({
                 status: "error",
                 message: "invalid id"
@@ -109,7 +109,7 @@ router.get('/:id', async(req,res)=>{
 
 // GET ALL POINTS
 
-router.get('/', async(req,res)=>{
+router.get('/', async (req, res) => {
     try {
         const data = await POINT.find()
         return res.json({
