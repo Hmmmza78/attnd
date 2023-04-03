@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router()
 const USER = require('../models/user')
 const bcrypt = require('bcrypt');
+const { body, validationResult } = require('express-validator')
 
 
 
@@ -17,7 +18,7 @@ router.post('/edit', async (req, res) => {
         }
     }
     try {
-        const user = await USER.findByIdAndUpdate(req.params.id, { $set: req.body })
+        const user = await USER.findByIdAndUpdate(req.body.id, { $set: req.body })
         return res.status(200).json({
             message: "Account updated successfully",
             user
@@ -54,7 +55,9 @@ router.get('/getOne', async (req, res) => {
     try {
         const user = await USER.findById(req.body.id)
         if (user != null) {
-            return res.json(user)
+            return res.json({
+                status: "success",
+                data: user})
         }
     } catch (error) {
         return res.status(400).json(error)
@@ -69,7 +72,10 @@ router.get('/getOne', async (req, res) => {
 router.get('/', async (req, res) => {
     try {
         const data = await USER.find()
-        return res.json(data)
+        return res.json({
+            status: "success",
+            data: data
+        })
     } catch (error) {
         return res.status(400).json(error)
     }
