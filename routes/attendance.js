@@ -95,6 +95,9 @@ router.post('/checkOut', [
     }
 })
 
+
+// LEADER BOARD
+
 router.get('/leaderBoard', async (req, res) => {
     try {
         // Query the attendance records collection to get the leaderBoard data
@@ -171,7 +174,7 @@ router.get('/', async (req, res) => {
 });
 
 // GET API
-router.get('/:id', async (req, res) => {
+router.get('/getOne', async (req, res) => {
     try {
         let { userId } = req.body
         const oldData = await ATTENDANCE.findOne({ userId })
