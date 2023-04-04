@@ -14,10 +14,8 @@ router.post('/register', [
     body('name').notEmpty(),
     body('email').isEmail(),
     body('password').notEmpty({ min: 6 }),
-    body('phoneNumber').notEmpty(),
-    body('title').notEmpty(),
-    body('jobType').notEmpty(),
-    body('isAdmin').notEmpty()
+    body('isAdmin').notEmpty(),
+
 ],
     async (req, res) => {
         const error = validationResult(req)
@@ -26,16 +24,15 @@ router.post('/register', [
         }
 
         try {
-            let { name, email, password, phoneNumber, title, jobType, isAdmin } = req.body
-            const oldData = await USER.findOne(
-                { $or: [{ email }, { phoneNumber }] })
+            let { name, email, password, isAdmin }  = req.body
+            const oldData = await USER.findOne({ email })
             if (oldData) {
                 return res.status(400).json({ message: 'user already exists!' })
             }
 
             password = await bcrypt.hash(password, 15)
 
-            const data = await USER.create({ name, email, password, phoneNumber, title, jobType, isAdmin })
+            const data = await USER.create({ name, email, password, isAdmin })
 
             return res.status(200).json({
                 message: 'user successfully registered',

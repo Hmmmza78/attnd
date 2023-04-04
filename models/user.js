@@ -15,25 +15,27 @@ const userSchema = new mongoose.Schema({
     },
     phoneNumber: {
         type: String,
-        required: true,
-        unique: true
+        required: false
     },
     title: {
         type: String,
-        required: true
+        required: false
     },
-    jobType: {
+    designation: {
         type: String,
-        required: true
+        required: false
     },
-    isAdmin: {
+    department: {
         type: String,
-        required: true,
-        default: false
+        required: false
     },
     image: {
         type: String,
         required: false
+    },
+    isAdmin: {
+        type: String,
+        required: true
     }
 }, {
     collection: 'users',
